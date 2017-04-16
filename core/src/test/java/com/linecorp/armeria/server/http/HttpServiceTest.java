@@ -225,6 +225,13 @@ public class HttpServiceTest {
         public String returnString(@PathParam("var") String var) {
             return var;
         }
+
+        // Case 10: No path params
+        @Get
+        @Path("/no-path-params")
+        public String noPathParams() {
+            return "no-path-params";
+        }
     }
 
     @BeforeClass
@@ -362,6 +369,11 @@ public class HttpServiceTest {
             // Run case 9 but with not-mapped HTTP method (Post).
             try (CloseableHttpResponse res = hc.execute(new HttpPost(newUri("/dynamic3/string/blah")))) {
                 assertThat(res.getStatusLine().toString(), is("HTTP/1.1 404 Not Found"));
+            }
+            // Run case 10.
+            try (CloseableHttpResponse res = hc.execute(new HttpGet(newUri("/dynamic3/no-path-params")))) {
+                assertThat(res.getStatusLine().toString(), is("HTTP/1.1 200 OK"));
+                assertThat(EntityUtils.toString(res.getEntity()), is("String[no-path-params]"));
             }
         }
     }

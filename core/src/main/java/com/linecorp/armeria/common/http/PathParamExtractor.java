@@ -143,6 +143,14 @@ public final class PathParamExtractor {
     }
 
     /**
+     * Returns boolean indicating whether or not given {@code path} is match.
+     */
+    public boolean match(String path) {
+        Matcher matcher = pattern.matcher(path);
+        return matcher.matches();
+    }
+
+    /**
      * Returns extracting results with given {@code path}.
      * If the {@code path} does not match, returns an empty {@link Map}.
      */

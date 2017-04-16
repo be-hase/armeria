@@ -18,7 +18,6 @@ package com.linecorp.armeria.server.http.dynamic;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -78,13 +77,11 @@ final class DynamicHttpFunctionEntry {
         if (!this.methods.contains(method)) {
             return null;
         }
-
-        Map<String, String> args = pathParamExtractor.extract(mappedPath);
-        if (args.isEmpty()) {
+        if (!pathParamExtractor.match(mappedPath)) {
             return null;
         }
 
-        return new MappedDynamicFunction(function, args);
+        return new MappedDynamicFunction(function, pathParamExtractor.extract(mappedPath));
     }
 
     @Override

@@ -107,4 +107,14 @@ public class PathParamExtractorTest {
         assertThat(ppe.hashCode()).isNotEqualTo(ppe3.hashCode());
         assertThat(ppe2.hashCode()).isNotEqualTo(ppe3.hashCode());
     }
+
+    @Test
+    public void testMatch() throws Exception {
+        assertThat(new PathParamExtractor("/service/match").match("/service/match")).isTrue();
+        assertThat(new PathParamExtractor("/service/match/{hoge}").match("/service/match/hoge")).isTrue();
+        assertThat(new PathParamExtractor("/service/match/:hoge").match("/service/match/hoge")).isTrue();
+
+        assertThat(new PathParamExtractor("/service/match").match("/service/invalid")).isFalse();
+        assertThat(new PathParamExtractor("/service/match/hoge").match("/service/invalid/hoge")).isFalse();
+    }
 }
